@@ -6,5 +6,7 @@ require('nvim-tree').setup({
         enable = false,
         ignore = true,
     }
-
 })
+
+vim.keymap.set('n', '<leader>e', ':NvimTreeFocus <CR>')
+vim.keymap.set('n', '<C-n>', ':NvimTreeToggle <CR>')

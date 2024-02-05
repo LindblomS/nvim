@@ -36,4 +36,6 @@ km.set('n', '<C-h>', '<C-w>h')
 km.set('n', '<C-l>', '<C-w>l')
 km.set('n', '<C-j>', '<C-w>j')
 km.set('n', '<C-k>', '<C-w>k')
+km.set('n', '<S-l>', ':bnext<CR>')
+km.set('n', '<S-h>', ':bprevious<CR>')
 

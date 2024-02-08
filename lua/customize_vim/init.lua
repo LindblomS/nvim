@@ -38,4 +38,4 @@ km.set('n', '<C-j>', '<C-w>j')
 km.set('n', '<C-k>', '<C-w>k')
 km.set('n', '<S-l>', ':bnext<CR>')
 km.set('n', '<S-h>', ':bprevious<CR>')
-
+km.set('n', '<leader>q', ':bprevious<bar> bdelete #<CR>')

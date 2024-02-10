@@ -55,5 +55,4 @@ require("lazy").setup({
     "L3MON4D3/LuaSnip",
     "nvim-tree/nvim-tree.lua",
     { 'akinsho/bufferline.nvim', version = 'v4.5.0', dependencies = 'nvim-tree/nvim-web-devicons' },
-
 })

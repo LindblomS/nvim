@@ -1,6 +1,4 @@
-
-vim.g.mapleader = " "
---vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+vim.g.mapleader = ' '
 
 local o = vim.opt
 o.nu = true

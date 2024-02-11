@@ -13,7 +13,8 @@ lsp_config.lua_ls.setup {
 }
 
 lsp_config.rust_analyzer.setup {}
-lsp_config.omnisharp.setup {}
+--lsp_config.omnisharp.setup {}
+lsp_config.tsserver.setup {}
 
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(ev)

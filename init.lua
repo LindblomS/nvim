@@ -38,7 +38,7 @@ require("lazy").setup({
         config = function()
             local configs = require("nvim-treesitter.configs")
             configs.setup({
-                ensure_installed = { "lua", "rust", "c_sharp", "vim", "toml" },
+                ensure_installed = { "lua", "rust", "c_sharp", "vim", "toml", "typescript", "javascript" },
                 sync_install = false,
                 highlight = { enable = true },
                 indent = { enable = true },
@@ -55,4 +55,5 @@ require("lazy").setup({
     "L3MON4D3/LuaSnip",
     "nvim-tree/nvim-tree.lua",
     { 'akinsho/bufferline.nvim', version = 'v4.5.0', dependencies = 'nvim-tree/nvim-web-devicons' },
+    "mfussenegger/nvim-lint",
 })

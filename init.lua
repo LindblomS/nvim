@@ -17,6 +17,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local is_windows = vim.fn.has('win64') == 1
 require("lazy").setup({
     {
         "ellisonleao/gruvbox.nvim",
@@ -56,4 +57,5 @@ require("lazy").setup({
     "nvim-tree/nvim-tree.lua",
     { 'akinsho/bufferline.nvim', version = 'v4.5.0', dependencies = 'nvim-tree/nvim-web-devicons' },
     "mfussenegger/nvim-lint",
+    { "OmniSharp/omnisharp-vim", enabled = is_windows }
 })

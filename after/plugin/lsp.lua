@@ -13,7 +13,12 @@ lsp_config.lua_ls.setup {
 }
 
 lsp_config.rust_analyzer.setup {}
---lsp_config.omnisharp.setup {}
+local is_windows = vim.fn.has('win64') == 1
+if is_windows then
+    -- configure for OmniSharp/omnisharp-vim
+else
+    lsp_config.omnisharp.setup {}
+end
 lsp_config.tsserver.setup {}
 
 vim.api.nvim_create_autocmd('LspAttach', {

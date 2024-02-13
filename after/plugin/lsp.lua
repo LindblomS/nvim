@@ -20,6 +20,7 @@ else
     lsp_config.omnisharp.setup {}
 end
 lsp_config.tsserver.setup {}
+lsp_config.volar.setup {}
 
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(ev)

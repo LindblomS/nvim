@@ -1,5 +1,12 @@
 require('mason').setup()
-require('mason-lspconfig').setup()
+require('mason-lspconfig').setup {
+    ensure_installed = {
+        'lua_ls',
+        'rust_analyzer',
+        'tsserver',
+        'volar',
+    }
+}
 
 local lsp_config = require("lspconfig")
 lsp_config.lua_ls.setup {
@@ -12,13 +19,12 @@ lsp_config.lua_ls.setup {
     }
 }
 
-lsp_config.rust_analyzer.setup { }
+lsp_config.rust_analyzer.setup {}
 lsp_config.tsserver.setup {}
 lsp_config.volar.setup {}
 
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(ev)
-        --vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
         local opts = { buffer = ev.buf }
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
         vim.keymap.set('n', '<leader>s', vim.lsp.buf.signature_help, opts)

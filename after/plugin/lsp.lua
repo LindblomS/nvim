@@ -12,22 +12,16 @@ lsp_config.lua_ls.setup {
     }
 }
 
-lsp_config.rust_analyzer.setup {}
-local is_windows = vim.fn.has('win64') == 1
-if is_windows then
-    -- configure for OmniSharp/omnisharp-vim
-else
-    lsp_config.omnisharp.setup {}
-end
+lsp_config.rust_analyzer.setup { }
 lsp_config.tsserver.setup {}
 lsp_config.volar.setup {}
 
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(ev)
-        vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+        --vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
         local opts = { buffer = ev.buf }
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+        vim.keymap.set('n', '<leader>s', vim.lsp.buf.signature_help, opts)
         vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
         vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, opts)
         vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)

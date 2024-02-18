@@ -25,8 +25,8 @@ lsp_config.tsserver.setup {}
 lsp_config.volar.setup {}
 
 -- omnisharp
-local sln_files = vim.fs.find(function(name, path)
-    return name:match('.*%.sln$') and path:match('./')
+local sln_files = vim.fs.find(function(name, _)
+    return name:match('.*%.sln$')
 end, { limit = math.huge, type = 'file' })
 
 local sln_file = ''

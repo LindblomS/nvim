@@ -57,5 +57,6 @@ require('lazy').setup({
     { 'akinsho/bufferline.nvim', version = 'v4.5.0',  dependencies = 'nvim-tree/nvim-web-devicons' },
     'mfussenegger/nvim-lint',
     'kylechui/nvim-surround',
-    { 'windwp/nvim-autopairs', event = 'InsertEnter', opts = {} }
+    { 'windwp/nvim-autopairs', event = 'InsertEnter', opts = {} },
+    'numToStr/Comment.nvim',
 })

@@ -1,1 +1,3 @@
 add close all buffers command
+
+configure nvim lazy properly

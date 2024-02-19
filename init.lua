@@ -23,8 +23,18 @@ require('lazy').setup({
         lazy = false,
         priority = 1000,
         config = function()
-            vim.cmd([[colorscheme gruvbox]])
+            require('gruvbox').setup({
+                italics = {
+                    strings = false,
+                    emphasis = false,
+                    comments = false,
+                    operators = false,
+                    folds = false,
+                },
+                contrast = 'hard',
+            })
             vim.opt.background = 'dark'
+            vim.cmd([[colorscheme gruvbox]])
         end
     },
     {
@@ -54,9 +64,9 @@ require('lazy').setup({
     'hrsh7th/nvim-cmp',
     'L3MON4D3/LuaSnip',
     'nvim-tree/nvim-tree.lua',
-    { 'akinsho/bufferline.nvim', version = 'v4.5.0',  dependencies = 'nvim-tree/nvim-web-devicons' },
+    { 'akinsho/bufferline.nvim', version = 'v4.5.0',    dependencies = 'nvim-tree/nvim-web-devicons' },
     'mfussenegger/nvim-lint',
     'kylechui/nvim-surround',
-    { 'windwp/nvim-autopairs', event = 'InsertEnter', opts = {} },
+    { 'windwp/nvim-autopairs',   event = 'InsertEnter', opts = {} },
     'numToStr/Comment.nvim',
 })

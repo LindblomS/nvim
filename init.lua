@@ -22,17 +22,18 @@ require('lazy').setup({
         'ellisonleao/gruvbox.nvim',
         lazy = false,
         priority = 1000,
-        config = function()
-            require('gruvbox').setup({
-                italics = {
-                    strings = false,
-                    emphasis = false,
-                    comments = false,
-                    operators = false,
-                    folds = false,
-                },
-                contrast = 'hard',
-            })
+        opts = {
+            italic = {
+                strings = false,
+                emphasis = false,
+                comments = false,
+                operators = false,
+                folds = false,
+            },
+            contrast = 'hard',
+        },
+        config = function(_, opts)
+            require('gruvbox').setup(opts)
             vim.opt.background = 'dark'
             vim.cmd([[colorscheme gruvbox]])
         end

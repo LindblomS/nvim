@@ -15,7 +15,7 @@ o.autoindent = true
 o.swapfile = false
 o.backup = false
 
-o.hlsearch = false
+o.hlsearch = true
 o.incsearch = true
 
 o.scrolloff = 8
@@ -37,3 +37,4 @@ km.set('n', '<C-k>', '<C-w>k')
 km.set('n', '<S-l>', ':bnext<CR>')
 km.set('n', '<S-h>', ':bprevious<CR>')
 km.set('n', '<leader>q', ':bprevious<bar> bdelete #<CR>')
+km.set('n', '<ESC>', ':noh <CR>', { silent = true })

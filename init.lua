@@ -22,7 +22,9 @@ require('lazy').setup({
         'ellisonleao/gruvbox.nvim',
         lazy = false,
         priority = 1000,
+        enabled = true,
         opts = {
+            bold = false,
             italic = {
                 strings = false,
                 emphasis = false,

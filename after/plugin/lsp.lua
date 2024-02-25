@@ -10,6 +10,7 @@ require('mason-lspconfig').setup {
 }
 
 local lsp_config = require("lspconfig")
+
 lsp_config.lua_ls.setup {
     settings = {
         Lua = {
@@ -17,12 +18,12 @@ lsp_config.lua_ls.setup {
                 globals = { 'vim' }
             }
         }
-    }
+    },
 }
 
-lsp_config.rust_analyzer.setup {}
-lsp_config.tsserver.setup {}
-lsp_config.volar.setup {}
+lsp_config.rust_analyzer.setup({})
+lsp_config.tsserver.setup({})
+lsp_config.volar.setup({})
 
 -- omnisharp
 local sln_files = vim.fs.find(function(name, _)
@@ -36,7 +37,7 @@ if #sln_files > 0 then
     end)
 end
 
-lsp_config.omnisharp.setup {
+lsp_config.omnisharp.setup({
     root_dir = function()
         return './'
     end,
@@ -74,7 +75,7 @@ lsp_config.omnisharp.setup {
         config.capabilities = vim.deepcopy(config.capabilities)
         config.capabilities.workspace.workspaceFolders = false -- https://github.com/OmniSharp/omnisharp-roslyn/issues/909
     end
-}
+})
 
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(ev)

@@ -4,3 +4,5 @@ add save all buffers command
 configure nvim lazy properly
 
 configure telescope for better file display name
+
+configure so that new line after comment doesn't automatically make that a comment line too.

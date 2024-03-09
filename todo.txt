@@ -1,4 +1,3 @@
-add close all buffers command
 add save all buffers command
 
 configure nvim lazy properly

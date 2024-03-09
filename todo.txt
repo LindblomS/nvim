@@ -1,5 +1,3 @@
-add save all buffers command
-
 configure nvim lazy properly
 
 configure telescope for better file display name

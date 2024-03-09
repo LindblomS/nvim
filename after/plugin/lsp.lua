@@ -87,7 +87,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
         vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
         vim.keymap.set('n', '<leader>fm', function()
-            vim.lsp.buf.format { async = true }
+            require('conform').format({ async = true, lsp_fallback = true })
         end, opts)
     end
 })

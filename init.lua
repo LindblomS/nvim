@@ -72,4 +72,17 @@ require('lazy').setup({
     'kylechui/nvim-surround',
     { 'windwp/nvim-autopairs',   event = 'InsertEnter', opts = {} },
     'numToStr/Comment.nvim',
+    {
+        'stevearc/conform.nvim',
+        opts = {
+            formatters_by_ft = {
+                typescript = { 'prettier' },
+                javascript = { 'prettier' },
+            },
+            format_on_save = {
+                lsp_fallback = true,
+            },
+            event = { 'BufWritePre' },
+        }
+    }
 })

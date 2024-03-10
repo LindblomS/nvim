@@ -14,7 +14,16 @@ require('telescope').setup {
         layout_strategy = 'horizontal',
         layout_config = {
             width = 0.9
-        }
+        },
+        vimgrep_arguments = {
+            'rg',
+            '--color=never',
+            '--no-heading',
+            '--with-filename',
+            '--line-number',
+            '--column',
+            '--smart-case',
+            '--trim'
+        },
     },
-
 }

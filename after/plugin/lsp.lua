@@ -41,6 +41,8 @@ lsp_config.omnisharp.setup({
     root_dir = function()
         return './'
     end,
+    enable_roslyn_analyzers = false,
+    organize_imports_on_format = true,
     cmd = { string.format('%s/%s', vim.fn.stdpath('data'), 'mason/packages/omnisharp/libexec/OmniSharp'), '-s', sln_file, '-z', '--hostPID', tostring(vim.fn.getpid()), '--languageserver', '--encoding', 'utf-8' },
     on_new_config = function(config, _)
         if config.enable_editorconfig_support then

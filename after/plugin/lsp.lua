@@ -25,59 +25,65 @@ lsp_config.rust_analyzer.setup({})
 lsp_config.tsserver.setup({})
 lsp_config.volar.setup({})
 
--- omnisharp
-local sln_files = vim.fs.find(function(name, _)
-    return name:match('.*%.sln$')
-end, { limit = math.huge, type = 'file' })
+vim.api.nvim_create_user_command('OmniSharp',
+    function()
+        -- omnisharp
+        local sln_files = vim.fs.find(function(name, _)
+            return name:match('.*%.sln$')
+        end, { limit = math.huge, type = 'file', stop = '.' })
 
-local sln_file = ''
-if #sln_files > 0 then
-    vim.ui.select(sln_files, { prompt = 'Select solution' }, function(selection)
-        sln_file = selection
-    end)
-end
+        local sln_file = ''
+        if #sln_files > 0 then
+            vim.ui.select(sln_files, { prompt = 'Select solution' }, function(selection)
+                sln_file = selection
+            end)
+        end
 
-lsp_config.omnisharp.setup({
-    root_dir = function()
-        return './'
+        lsp_config.omnisharp.setup({
+            root_dir = function()
+                return './'
+            end,
+            enable_roslyn_analyzers = false,
+            organize_imports_on_format = true,
+            cmd = { string.format('%s/%s', vim.fn.stdpath('data'), 'mason/packages/omnisharp/libexec/OmniSharp'), '-s', sln_file, '-z', '--hostPID', tostring(vim.fn.getpid()), '--languageserver', '--encoding', 'utf-8' },
+            on_new_config = function(config, _)
+                if config.enable_editorconfig_support then
+                    table.insert(config.cmd, 'FormattingOptions:EnableEditorConfigSupport=true')
+                end
+
+                if config.organize_imports_on_format then
+                    table.insert(config.cmd, 'FormattingOptions:OrganizeImports=true')
+                end
+
+                if config.enable_ms_build_load_projects_on_demand then
+                    table.insert(config.cmd, 'MsBuild:LoadProjectsOnDemand=true')
+                end
+
+                if config.enable_roslyn_analyzers then
+                    table.insert(config.cmd, 'RoslynExtensionsOptions:EnableAnalyzersSupport=true')
+                end
+
+                if config.enable_import_completion then
+                    table.insert(config.cmd, 'RoslynExtensionsOptions:EnableImportCompletion=true')
+                end
+
+                if config.sdk_include_prereleases then
+                    table.insert(config.cmd, 'Sdk:IncludePrereleases=true')
+                end
+
+                if config.analyze_open_documents_only then
+                    table.insert(config.cmd, 'RoslynExtensionsOptions:AnalyzeOpenDocumentsOnly=true')
+                end
+
+                -- Disable the handling of multiple workspaces in a single instance
+                config.capabilities = vim.deepcopy(config.capabilities)
+                config.capabilities.workspace.workspaceFolders = false -- https://github.com/OmniSharp/omnisharp-roslyn/issues/909
+            end
+        })
     end,
-    enable_roslyn_analyzers = false,
-    organize_imports_on_format = true,
-    cmd = { string.format('%s/%s', vim.fn.stdpath('data'), 'mason/packages/omnisharp/libexec/OmniSharp'), '-s', sln_file, '-z', '--hostPID', tostring(vim.fn.getpid()), '--languageserver', '--encoding', 'utf-8' },
-    on_new_config = function(config, _)
-        if config.enable_editorconfig_support then
-            table.insert(config.cmd, 'FormattingOptions:EnableEditorConfigSupport=true')
-        end
+    {}
+)
 
-        if config.organize_imports_on_format then
-            table.insert(config.cmd, 'FormattingOptions:OrganizeImports=true')
-        end
-
-        if config.enable_ms_build_load_projects_on_demand then
-            table.insert(config.cmd, 'MsBuild:LoadProjectsOnDemand=true')
-        end
-
-        if config.enable_roslyn_analyzers then
-            table.insert(config.cmd, 'RoslynExtensionsOptions:EnableAnalyzersSupport=true')
-        end
-
-        if config.enable_import_completion then
-            table.insert(config.cmd, 'RoslynExtensionsOptions:EnableImportCompletion=true')
-        end
-
-        if config.sdk_include_prereleases then
-            table.insert(config.cmd, 'Sdk:IncludePrereleases=true')
-        end
-
-        if config.analyze_open_documents_only then
-            table.insert(config.cmd, 'RoslynExtensionsOptions:AnalyzeOpenDocumentsOnly=true')
-        end
-
-        -- Disable the handling of multiple workspaces in a single instance
-        config.capabilities = vim.deepcopy(config.capabilities)
-        config.capabilities.workspace.workspaceFolders = false -- https://github.com/OmniSharp/omnisharp-roslyn/issues/909
-    end
-})
 
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(ev)

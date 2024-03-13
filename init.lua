@@ -79,10 +79,6 @@ require('lazy').setup({
                 typescript = { 'prettier' },
                 javascript = { 'prettier' },
             },
-            format_on_save = {
-                lsp_fallback = true,
-            },
-            event = { 'BufWritePre' },
         }
     }
 })

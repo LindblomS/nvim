@@ -43,7 +43,8 @@ vim.api.nvim_create_user_command('OmniSharp',
             root_dir = function()
                 return './'
             end,
-            enable_roslyn_analyzers = false,
+            enable_roslyn_analyzers = true,
+            analyze_open_documents_only = true,
             organize_imports_on_format = true,
             cmd = { string.format('%s/%s', vim.fn.stdpath('data'), 'mason/packages/omnisharp/libexec/OmniSharp'), '-s', sln_file, '-z', '--hostPID', tostring(vim.fn.getpid()), '--languageserver', '--encoding', 'utf-8' },
             on_new_config = function(config, _)
@@ -95,7 +96,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
         vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
         vim.keymap.set('n', '<leader>fm', function()
-            require('conform').format({ async = true, lsp_fallback = true })
+            require('conform').format({ async = true, lsp_fallback = true, timeout_ms = 1000 })
         end, opts)
     end
 })

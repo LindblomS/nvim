@@ -22,7 +22,7 @@ require('lazy').setup({
         'ellisonleao/gruvbox.nvim',
         lazy = false,
         priority = 1000,
-        enabled = true,
+        enabled = false,
         opts = {
             bold = false,
             italic = {
@@ -38,6 +38,25 @@ require('lazy').setup({
             require('gruvbox').setup(opts)
             vim.opt.background = 'dark'
             vim.cmd([[colorscheme gruvbox]])
+        end
+    },
+    {
+        'rebelot/kanagawa.nvim',
+        lazy = false,
+        priority = 1000,
+        enabled = true,
+        opts = {
+            commentStyle = { italic = false },
+            keywordStyle = { italic = false },
+            statementStyle = { italic = false },
+            background = {
+                dark = 'dragon',
+            }
+        },
+        config = function(_, opts)
+            require('kanagawa').setup(opts)
+            vim.opt.background = 'dark'
+            vim.cmd([[colorscheme kanagawa]])
         end
     },
     {

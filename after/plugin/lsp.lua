@@ -44,7 +44,7 @@ vim.api.nvim_create_user_command('OmniSharp',
                 return './'
             end,
             enable_roslyn_analyzers = true,
-            analyze_open_documents_only = true,
+            analyze_open_documents_only = false,
             organize_imports_on_format = true,
             cmd = { string.format('%s/%s', vim.fn.stdpath('data'), 'mason/packages/omnisharp/libexec/OmniSharp'), '-s', sln_file, '-z', '--hostPID', tostring(vim.fn.getpid()), '--languageserver', '--encoding', 'utf-8' },
             on_new_config = function(config, _)

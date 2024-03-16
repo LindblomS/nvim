@@ -10,7 +10,6 @@ return {
     'nvim-tree/nvim-tree.lua',
     'mfussenegger/nvim-lint',
     'kylechui/nvim-surround',
-    { 'windwp/nvim-autopairs',   event = 'InsertEnter', opts = {} },
     {
         'stevearc/conform.nvim',
         opts = {

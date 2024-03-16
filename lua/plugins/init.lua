@@ -1,8 +1,8 @@
 return {
-    'williamboman/mason.nvim',
-    'williamboman/mason-lspconfig.nvim',
-    'neovim/nvim-lspconfig',
-    'kylechui/nvim-surround',
+    {
+        'kylechui/nvim-surround',
+        config = true
+    },
     {
         'stevearc/conform.nvim',
         opts = {

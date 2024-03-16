@@ -3,7 +3,6 @@ return {
     'williamboman/mason-lspconfig.nvim',
     'neovim/nvim-lspconfig',
     'nvim-tree/nvim-tree.lua',
-    'mfussenegger/nvim-lint',
     'kylechui/nvim-surround',
     {
         'stevearc/conform.nvim',

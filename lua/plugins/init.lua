@@ -2,7 +2,6 @@ return {
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
     'neovim/nvim-lspconfig',
-    'nvim-tree/nvim-tree.lua',
     'kylechui/nvim-surround',
     {
         'stevearc/conform.nvim',

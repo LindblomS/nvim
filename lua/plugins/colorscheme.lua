@@ -27,11 +27,12 @@ return {
         priority = 1000,
         enabled = true,
         opts = {
+            undercurl = false,
             commentStyle = { italic = false },
             keywordStyle = { italic = false },
-            statementStyle = { italic = false },
+            statementStyle = { bold = false },
             background = {
-                dark = 'dragon',
+                dark = 'wave',
             },
             overrides = function(colors)
                 local theme = colors.theme

@@ -32,7 +32,7 @@ return {
             keywordStyle = { italic = false },
             statementStyle = { bold = false },
             background = {
-                dark = 'wave',
+                dark = 'dragon',
             },
             overrides = function(colors)
                 local theme = colors.theme

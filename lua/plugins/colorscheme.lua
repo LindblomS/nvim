@@ -32,7 +32,7 @@ return {
             keywordStyle = { italic = false },
             statementStyle = { bold = false },
             background = {
-                dark = 'dragon',
+                dark = 'wave',
             },
             overrides = function(colors)
                 local theme = colors.theme
@@ -52,5 +52,5 @@ return {
             vim.opt.background = 'dark'
             vim.cmd([[colorscheme kanagawa]])
         end
-    }
+    },
 }

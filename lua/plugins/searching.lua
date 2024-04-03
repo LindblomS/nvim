@@ -23,6 +23,18 @@ return {
         },
         config = function(_, opts)
             require('telescope').setup(opts)
+            local actions = require('telescope.actions')
+            require('telescope').setup({
+                pickers = {
+                    buffers = {
+                        mappings = {
+                            i = {
+                                ["<c-d>"] = actions.delete_buffer + actions.move_to_top,
+                            }
+                        }
+                    }
+                }
+            })
             local builtin = require('telescope.builtin')
             local set = vim.keymap.set
             set('n', '<leader>ff', builtin.find_files)

@@ -39,3 +39,6 @@ km.set('n', '<leader>qa', ':%bd<CR>', { silent = true }, 'Close all buffers')
 km.set('n', '<leader>qA', ':%bd|e#|bd#|\'"<CR>', { silent = true }, 'Close all buffers but this')
 km.set('n', '<leader>qt', ':bprevious<bar> bdelete #<CR>', { silent = true }, 'Close this buffer')
 km.set('i', 'kj', '<Esc>')
+km.set('n', '<C-y>', '<C-y><C-y>')
+km.set('n', '<C-e>', '<C-e><C-e>')
+

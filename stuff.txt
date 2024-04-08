@@ -1,0 +1,2 @@
+To fix when treesitter and buffer gets out of sync.
+:write | edit | TSBufEnable highlight

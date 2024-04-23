@@ -11,6 +11,7 @@ return {
                     'tsserver',
                     'volar',
                     'omnisharp',
+                    'eslint_lsp',
                 },
             })
             local lspconfig = require('lspconfig')
@@ -29,6 +30,15 @@ return {
                         }
                     }
                 },
+            })
+
+            lspconfig.eslint.setup({
+                on_attach = function(_, bufnr)
+                    vim.api.nvim_create_autocmd('BufWritePre', {
+                        buffer = bufnr,
+                        command = 'EslintFixAll',
+                    })
+                end
             })
 
             vim.api.nvim_create_user_command('OmniSharp',
@@ -81,9 +91,7 @@ return {
                     vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, lsp_opts)
                     vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, lsp_opts)
                     vim.keymap.set('n', ']d', vim.diagnostic.goto_next, lsp_opts)
-                    vim.keymap.set('n', '<leader>fm', function()
-                        require('conform').format({ async = true, lsp_fallback = true, timeout_ms = 1000 })
-                    end, opts)
+                    vim.keymap.set('n', '<leader>fm', function() vim.lsp.buf.format { async = true } end, lsp_opts)
                 end
             })
         end

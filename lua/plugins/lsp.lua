@@ -2,7 +2,7 @@ return {
     {
         'neovim/nvim-lspconfig',
         dependencies = { 'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim' },
-        config = function(_, opts)
+        config = function(_, _)
             require('mason').setup({})
             require('mason-lspconfig').setup({
                 ensure_installed = {
@@ -11,7 +11,6 @@ return {
                     'tsserver',
                     'volar',
                     'omnisharp',
-                    'eslint_lsp',
                 },
             })
             local lspconfig = require('lspconfig')

@@ -47,6 +47,7 @@ return {
             set('n', '<leader>fb', builtin.buffers)
             set('n', '<leader>fw', builtin.live_grep)
             set('n', '<leader>gc', builtin.git_bcommits)
+            set('n', '<leader>qf', builtin.quickfix)
         end
     },
 }

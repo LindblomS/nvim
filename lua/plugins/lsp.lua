@@ -90,7 +90,14 @@ return {
                     vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, lsp_opts)
                     vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, lsp_opts)
                     vim.keymap.set('n', ']d', vim.diagnostic.goto_next, lsp_opts)
-                    vim.keymap.set('n', '<leader>fm', function() vim.lsp.buf.format { async = true } end, lsp_opts)
+                    vim.keymap.set('n', '<leader>fm', function() vim.lsp.buf.format() end, lsp_opts)
+
+                    vim.api.nvim_create_autocmd('BufWritePre', {
+                        pattern = { '*.{cs,rs,lua}' },
+                        callback = function()
+                            vim.lsp.buf.format()
+                        end
+                    })
                 end
             })
         end

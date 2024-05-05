@@ -1,18 +1,7 @@
 return {
     {
         'neovim/nvim-lspconfig',
-        dependencies = { 'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim' },
         config = function(_, _)
-            require('mason').setup({})
-            require('mason-lspconfig').setup({
-                ensure_installed = {
-                    'lua_ls',
-                    'rust_analyzer',
-                    'tsserver',
-                    'volar',
-                    'omnisharp',
-                },
-            })
             local lspconfig = require('lspconfig')
 
             -- servers that doesn't require any custom setup
@@ -42,15 +31,17 @@ return {
 
             vim.api.nvim_create_user_command('OmniSharp',
                 function()
-                    local sln_files = vim.fs.find(function(name, _)
-                        return name:match('.*%.sln$')
-                    end, { limit = math.huge, type = 'file', stop = '.' })
-
-                    local sln_file = ''
-                    if #sln_files > 0 then
-                        vim.ui.select(sln_files, { prompt = 'Select solution' }, function(selection)
-                            sln_file = selection
-                        end)
+                    local function get_sln_file()
+                        local sln_files = vim.fs.find(function(name, _)
+                            return name:match('.*%.sln$')
+                        end, { limit = math.huge, type = 'file', stop = '.' })
+                        local sln_file = ''
+                        if #sln_files > 0 then
+                            vim.ui.select(sln_files, { prompt = 'Select solution' }, function(selection)
+                                sln_file = selection
+                            end)
+                        end
+                        return sln_file
                     end
 
                     lspconfig.omnisharp.setup({
@@ -58,9 +49,9 @@ return {
                             return './'
                         end,
                         cmd = {
-                            string.format('%s/%s', vim.fn.stdpath('data'), 'mason/packages/omnisharp/libexec/OmniSharp'),
+                            'OmniSharp',
                             '-s',
-                            sln_file,
+                            string.format('%s', get_sln_file()),
                             '-z',
                             '--hostPID',
                             tostring(vim.fn.getpid()),

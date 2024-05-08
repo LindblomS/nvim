@@ -23,17 +23,21 @@ return {
         },
         config = function(_, opts)
             require('telescope').setup(opts)
-            local actions = require('telescope.actions')
             require('telescope').setup({
-                pickers = {
-                    buffers = {
-                        mappings = {
-                            i = {
-                                ["<c-d>"] = actions.delete_buffer + actions.move_to_top,
-                            }
-                        }
-                    }
-                }
+                defaults = {
+                    mappings = {
+                        i = {
+                            ['<C-j>'] = 'move_selection_next',
+                            ['<C-k>'] = 'move_selection_previous',
+                            ['<C-d>'] = 'delete_buffer',
+                        },
+                        n = {
+                            ['<C-j>'] = 'move_selection_next',
+                            ['<C-k>'] = 'move_selection_previous',
+                            ['<C-d>'] = 'delete_buffer',
+                        },
+                    },
+                },
             })
             local builtin = require('telescope.builtin')
             local set = vim.keymap.set

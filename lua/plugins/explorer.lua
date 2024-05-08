@@ -10,6 +10,9 @@ return {
                 ignore = true,
             },
         },
+        keys = {
+            { '<leader>e' }
+        },
         config = function(_, opts)
             require('nvim-tree').setup(opts)
             local set_opts = { silent = true }

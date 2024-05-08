@@ -1,7 +1,6 @@
 return {
     {
         'numToStr/Comment.nvim',
-        lazy = false,
         opts = {
             mappings = false,
         },
@@ -16,6 +15,12 @@ return {
                 { expr = true, desc = 'Uncomment current line' })
             map('v', '<leader>/', api.call('comment.linewise', 'g@'), { expr = true, desc = 'Comment selection' })
             map('v', '<leader>\\', api.call('uncomment.linewise', 'g@'), { expr = true, desc = 'Uncomment selection' })
-        end
+        end,
+        keys = {
+            { '<leader>/' },
+            { '<leader>\\' },
+            { '<leader>/',  mode = 'v' },
+            { '<leader>\\', mode = 'v' },
+        }
     }
 }

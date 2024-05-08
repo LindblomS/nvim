@@ -37,17 +37,21 @@ return {
             })
             local builtin = require('telescope.builtin')
             local set = vim.keymap.set
-            set('n', '<leader>ff', builtin.find_files)
             set('n', 'gr', builtin.lsp_references)
             set('n', 'gs', builtin.lsp_document_symbols)
             set('n', 'gd', builtin.lsp_definitions)
             set('n', 'gD', builtin.lsp_type_definitions)
             set('n', 'gi', builtin.lsp_implementations)
-            set('n', '<leader>d', builtin.diagnostics)
+            set('n', '<leader>ff', builtin.find_files)
+            set('n', '<leader>fd', builtin.diagnostics)
             set('n', '<leader>fb', builtin.buffers)
             set('n', '<leader>fw', builtin.live_grep)
-            set('n', '<leader>gc', builtin.git_bcommits)
-            set('n', '<leader>qf', builtin.quickfix)
-        end
+            set('n', '<leader>fgc', builtin.git_bcommits)
+            set('n', '<leader>fqf', builtin.quickfix)
+        end,
+        keys = {
+            { '<leader>ff' },
+            { '<leader>fw' },
+        }
     },
 }

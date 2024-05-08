@@ -7,8 +7,6 @@ return {
             'hrsh7th/cmp-buffer',
             'hrsh7th/cmp-path'
         },
-        lazy = false, -- the load on event doesn't work for some reason.
-        -- event = 'InsertEnter',
         opts = function()
             local cmp = require('cmp')
             local luasnip = require('luasnip')

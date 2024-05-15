@@ -1,1 +1,3 @@
 configure so that new line after comment doesn't automatically make that a comment line too.
+
+Only display filename (not the path) in sln picker for omnisharp.

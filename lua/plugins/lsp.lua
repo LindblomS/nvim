@@ -29,7 +29,7 @@ return {
                 end
             })
 
-            vim.api.nvim_create_user_command('omnisharp',
+            vim.api.nvim_create_user_command('Omnisharp',
                 function()
                     local function get_sln_file()
                         local sln_files = vim.fs.find(function(name, _)

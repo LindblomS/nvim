@@ -44,7 +44,12 @@ return {
                         return sln_file
                     end
 
+                    -- This capability will generate EPERM errors on windows for omnisharp.
+                    local capabilities = vim.lsp.protocol.make_client_capabilities()
+                    capabilities.workspace.didChangeWatchedFiles = false
+
                     lspconfig.omnisharp.setup({
+                        capabilities = capabilities,
                         root_dir = function()
                             return './'
                         end,

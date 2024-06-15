@@ -32,17 +32,35 @@ return {
             vim.api.nvim_create_user_command('Omnisharp',
                 function()
                     local function get_sln_file()
-                        local sln_files = vim.fs.find(function(name, _)
+                        local function get_table_with_sln_name_and_path(sln_paths)
+                            local table = {}
+                            for _, path in ipairs(sln_paths) do
+                                local name = vim.fs.basename(path)
+                                table[name] = path
+                            end
+                            return table
+                        end
+
+                        local sln_paths = vim.fs.find(function(name, _)
                             return name:match('.*%.sln$')
                         end, { limit = math.huge, type = 'file', stop = '.' })
-                        local sln_file = ''
-                        if #sln_files > 0 then
-                            vim.ui.select(sln_files, { prompt = 'Select solution' }, function(selection)
-                                sln_file = selection
-                            end)
+                        local sln_names_and_paths = get_table_with_sln_name_and_path(sln_paths)
+
+                        local sln_names = {}
+                        for k, _ in pairs(sln_names_and_paths) do
+                            table.insert(sln_names, k)
                         end
-                        return sln_file
+
+                        local selected_sln_name = ''
+                        if #sln_names > 0 then
+                            vim.ui.select(sln_names, { prompt = 'Select solution' },
+                                function(selection)
+                                    selected_sln_name = selection
+                                end)
+                        end
+                        return sln_names_and_paths[selected_sln_name]
                     end
+
 
                     -- This capability will generate EPERM errors on windows for omnisharp.
                     local capabilities = vim.lsp.protocol.make_client_capabilities()

@@ -1,7 +1,5 @@
 configure so that new line after comment doesn't automatically make that a comment line too.
 
-Only display filename (not the path) in sln picker for omnisharp.
-
 Telescope
 - Fix go to references so that preview in enabled.
 - Fix go to symbols so that preview is enabled and so that it isn't truncated.

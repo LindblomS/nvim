@@ -2,20 +2,13 @@ return {
     {
         'hrsh7th/nvim-cmp',
         dependencies = {
-            'L3MON4D3/LuaSnip',
             'hrsh7th/cmp-nvim-lsp',
             'hrsh7th/cmp-buffer',
             'hrsh7th/cmp-path'
         },
         opts = function()
             local cmp = require('cmp')
-            local luasnip = require('luasnip')
             return {
-                snippet = {
-                    expand = function(args)
-                        luasnip.lsp_expand(args.body)
-                    end
-                },
                 window = {
                     completion = cmp.config.window.bordered()
                 },
@@ -25,8 +18,6 @@ return {
                     ['<tab>'] = cmp.mapping(function(fallback)
                         if cmp.visible() then
                             cmp.select_next_item()
-                        elseif luasnip.expand_or_jumpable() then
-                            luasnip.expand_or_jump()
                         else
                             fallback()
                         end
@@ -34,8 +25,6 @@ return {
                     ['S-Tab>'] = cmp.mapping(function(fallback)
                         if cmp.visible() then
                             cmp.select_prev_item()
-                        elseif luasnip.jumpable(-1) then
-                            luasnip.jump(-1)
                         else
                             fallback()
                         end
@@ -43,8 +32,6 @@ return {
                     ['<C-j>'] = cmp.mapping(function(fallback)
                         if cmp.visible() then
                             cmp.select_next_item()
-                        elseif luasnip.expand_or_jumpable() then
-                            luasnip.expand_or_jump()
                         else
                             fallback()
                         end
@@ -52,8 +39,6 @@ return {
                     ['<C-k>'] = cmp.mapping(function(fallback)
                         if cmp.visible() then
                             cmp.select_prev_item()
-                        elseif luasnip.jumpable(-1) then
-                            luasnip.jump(-1)
                         else
                             fallback()
                         end

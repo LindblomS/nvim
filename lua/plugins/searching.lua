@@ -40,6 +40,12 @@ return {
                 live_grep = {
                     preview = true,
                 },
+                lsp_document_symbols = {
+                    preview = true,
+                },
+                lsp_references = {
+                    preview = true,
+                }
             },
         },
         keys = {

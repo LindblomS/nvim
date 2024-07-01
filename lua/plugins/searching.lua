@@ -53,8 +53,10 @@ return {
             { '<leader>fw' },
         },
         config = function(_, opts)
-            require('telescope').setup(opts)
+            local telescope = require('telescope')
+            telescope.setup(opts)
             local builtin = require('telescope.builtin')
+            local utils = require('telescope.utils')
             local set = vim.keymap.set
             set('n', 'gr', builtin.lsp_references)
             set('n', 'gs', builtin.lsp_document_symbols)
@@ -67,6 +69,9 @@ return {
             set('n', '<leader>fw', builtin.live_grep)
             set('n', '<leader>fgc', builtin.git_bcommits)
             set('n', '<leader>fqf', builtin.quickfix)
+            set('n', '<leader>fF', function()
+                builtin.find_files({ cwd = utils.buffer_dir() })
+            end)
         end,
     },
 }

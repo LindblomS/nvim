@@ -3,3 +3,4 @@ configure so that new line after comment doesn't automatically make that a comme
 Telescope
 - Fix go to symbols so that preview is enabled and so that it isn't truncated.
 - find buffers, current buffer should be selected.
+- find files in the same folder as the current buffer.

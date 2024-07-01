@@ -17,6 +17,8 @@ o.backup = false
 
 o.hlsearch = true
 o.incsearch = true
+o.ignorecase = true
+o.smartcase = true
 
 o.scrolloff = 8
 
@@ -41,4 +43,3 @@ km.set('n', '<leader>qt', ':bprevious<bar> bdelete #<CR>', { silent = true }, 'C
 km.set('i', 'kj', '<Esc>')
 km.set('n', '<C-y>', '<C-y><C-y>')
 km.set('n', '<C-e>', '<C-e><C-e>')
-

@@ -1,6 +1,6 @@
 vim.g.mapleader = ' '
 
-local o = vim.opt
+local o = vim.o
 o.nu = true
 o.relativenumber = true
 o.wrap = false

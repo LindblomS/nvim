@@ -16,7 +16,7 @@ return {
                                 fg_reverse = palette.waveBlue1,
 
                                 bg_dim     = palette.dragonBlack1,
-                                bg_gutter  = palette.dragonBlack4,
+                                -- bg_gutter  = palette.dragonBlack4,
 
                                 bg_m3      = palette.dragonBlack0,
                                 bg_m2      = palette.dragonBlack1,
@@ -48,8 +48,13 @@ return {
                                     bg_border = palette.dragonBlack0,
                                 },
                             }
-                        }
-                    }
+                        },
+                        all = {
+                            ui = {
+                                bg_gutter = 'none',
+                            },
+                        },
+                    },
                 },
                 undercurl = false,
                 commentStyle = { italic = false },

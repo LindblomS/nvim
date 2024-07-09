@@ -5,50 +5,9 @@ return {
         priority = 1000,
         enabled = true,
         config = function()
-            local palette = require('kanagawa.colors').setup({ theme = 'dragon' }).palette
             local opts = {
                 colors = {
                     theme = {
-                        wave = {
-                            ui = {
-                                fg         = palette.dragonWhite,
-                                fg_dim     = palette.oldWhite,
-                                fg_reverse = palette.waveBlue1,
-
-                                bg_dim     = palette.dragonBlack1,
-                                -- bg_gutter  = palette.dragonBlack4,
-
-                                bg_m3      = palette.dragonBlack0,
-                                bg_m2      = palette.dragonBlack1,
-                                bg_m1      = palette.dragonBlack2,
-                                bg         = palette.dragonBlack3,
-                                bg_p1      = palette.dragonBlack4,
-                                bg_p2      = palette.dragonBlack5,
-
-                                special    = palette.dragonGray3,
-                                whitespace = palette.dragonBlack6,
-                                nontext    = palette.dragonBlack6,
-
-                                bg_visual  = palette.waveBlue1,
-                                bg_search  = palette.waveBlue2,
-
-                                pmenu      = {
-                                    fg       = palette.fujiWhite,
-                                    fg_sel   = "none",
-                                    bg       = palette.waveBlue1,
-                                    bg_sel   = palette.waveBlue2,
-                                    bg_thumb = palette.waveBlue2,
-                                    bg_sbar  = palette.waveBlue1,
-                                },
-
-                                float      = {
-                                    fg        = palette.oldWhite,
-                                    bg        = palette.dragonBlack0,
-                                    fg_border = palette.sumiInk6,
-                                    bg_border = palette.dragonBlack0,
-                                },
-                            }
-                        },
                         all = {
                             ui = {
                                 bg_gutter = 'none',

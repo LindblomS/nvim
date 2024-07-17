@@ -1,5 +1,7 @@
 configure so that new line after comment doesn't automatically make that a comment line too.
 
+Popouts, e.g. <S-k>, are hard to see because they have the same background color as the window.
+
 Telescope
 - Fix go to symbols so that preview is enabled and so that it isn't truncated.
 - find buffers, current buffer should be selected.

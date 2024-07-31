@@ -23,3 +23,12 @@ require('lazy').setup('plugins', {
         notify = false,
     }
 })
+
+local harpoon = require("harpoon")
+local h = harpoon.new()
+vim.keymap.set("n", "<leader>a", function() h:list():add() end)
+vim.keymap.set("n", "<leader>A", function() h.ui:toggle_quick_menu(h:list()) end)
+vim.keymap.set("n", "<C-h>", function() h:list():select(1) end)
+vim.keymap.set("n", "<C-j>", function() h:list():select(2) end)
+vim.keymap.set("n", "<C-k>", function() h:list():select(3) end)
+vim.keymap.set("n", "<C-l>", function() h:list():select(4) end)

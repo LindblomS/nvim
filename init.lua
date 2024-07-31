@@ -23,3 +23,5 @@ require('lazy').setup('plugins', {
         notify = false,
     }
 })
+
+require("harpun").setup()

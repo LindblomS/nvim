@@ -1,14 +1,29 @@
+--- WIP
+--- A file navigation plugin named harpun which basically is just a trimmed down version of harpoon.
 local M = {}
 local P = {} -- private
 M.__index = M
 
+function M.setup()
+    local harpun = M.new()
+    vim.keymap.set("n", "<leader>h", function() harpun:add(1) end)
+    vim.keymap.set("n", "<leader>j", function() harpun:add(2) end)
+    vim.keymap.set("n", "<leader>k", function() harpun:add(3) end)
+    vim.keymap.set("n", "<leader>l", function() harpun:add(4) end)
+
+    vim.keymap.set("n", "<C-h>", function() harpun:select(1) end)
+    vim.keymap.set("n", "<C-j>", function() harpun:select(2) end)
+    vim.keymap.set("n", "<C-k>", function() harpun:select(3) end)
+    vim.keymap.set("n", "<C-l>", function() harpun:select(4) end)
+
+    vim.api.nvim_create_user_command('Harpun', function()
+        harpun:print()
+    end, {})
+end
+
 function M.new()
-    local items = {}
     return setmetatable({
-        items = items,
-        name = "the name",
-        _length = 1,
-        _index = 1,
+        items = {},
     }, M)
 end
 
@@ -29,38 +44,13 @@ function P.create_item()
 end
 
 function P.normalize_path(bufname, root)
+    -- is plenary really necessary?
     return require("plenary.path"):new(bufname):make_relative(root)
 end
 
-function M:add()
+function M:add(index)
     local item = P.create_item()
-    local index = P.index_of(self.items, self._length, item)
-    if index == -1 then
-        local first_available_index = self._length + 1
-        for i = 1, self._length + 1 do
-            if self.items[i] == nil then -- if there is a hole in the sequence
-                first_available_index = i
-                break
-            end
-        end
-
-        self.items[first_available_index] = item
-        if first_available_index > self._length then
-            self._length = first_available_index
-        end
-    end
-end
-
-function P.index_of(items, length, item)
-    local index = -1
-    for i = 1, length do
-        local element = items[i]
-        if item == element then
-            index = i
-            break
-        end
-    end
-    return index
+    self.items[index] = item
 end
 
 function M:select(index)
@@ -111,13 +101,12 @@ function P.to_exact_name(value)
     return "^" .. value .. "$"
 end
 
-function M:display()
-    local out = {}
-    for i = 1, self._length do
-        local v = self.items[i]
-        out[i] = v == (nil and "") or v.value
+function M:print()
+    local items = {}
+    for i, v in ipairs(self.items) do
+        items[i] = v.value
     end
-    return out
+    print(vim.inspect(items))
 end
 
 return M

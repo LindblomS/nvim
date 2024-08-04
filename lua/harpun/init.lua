@@ -24,23 +24,27 @@ end
 function M.new()
     return setmetatable({
         items = {},
+        replace = false,
     }, M)
 end
 
-function P.create_item()
-    local name = P.normalize_path(vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf()), vim.loop.cwd())
-    local bufnr = vim.fn.bufnr(name, false)
+function P.create_item(bufname)
+    local bufnr = vim.fn.bufnr(bufname, false)
     local position = { 1, 0 }
     if bufnr ~= -1 then
         position = vim.api.nvim_win_get_cursor(0)
     end
     return {
-        value = name,
+        bufname = bufname,
         context = {
             row = position[1],
             column = position[2],
         }
     }
+end
+
+function P.get_bufname()
+    return P.normalize_path(vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf()), vim.loop.cwd())
 end
 
 function P.normalize_path(bufname, root)
@@ -49,8 +53,18 @@ function P.normalize_path(bufname, root)
 end
 
 function M:add(index)
-    local item = P.create_item()
-    self.items[index] = item
+    local item = self.items[index]
+    if item then
+        self:prompt(item.bufname, index)
+        return
+    else
+        item = P.create_item(P.get_bufname())
+        self.items[index] = item
+    end
+end
+
+function P.replace_at_index(items, index, bufname)
+    items[index] = P.create_item(bufname)
 end
 
 function M:select(index)
@@ -60,11 +74,11 @@ function M:select(index)
         return
     end
 
-    local bufnr = vim.fn.bufnr(P.to_exact_name(item.value))
+    local bufnr = vim.fn.bufnr(P.to_exact_name(item.bufname))
     local set_position = false
     if bufnr == -1 then
         set_position = true
-        bufnr = vim.fn.bufadd(item.value)
+        bufnr = vim.fn.bufadd(item.bufname)
     end
 
     if not vim.api.nvim_buf_is_loaded(bufnr) then
@@ -97,16 +111,46 @@ function M:select(index)
     end
 end
 
-function P.to_exact_name(value)
-    return "^" .. value .. "$"
+function P.to_exact_name(bufname)
+    return "^" .. bufname .. "$"
 end
 
 function M:print()
     local items = {}
     for i, v in ipairs(self.items) do
-        items[i] = v.value
+        items[i] = v.bufname
     end
     print(vim.inspect(items))
+end
+
+function M:prompt(bufname, index)
+    local current_bufname = P.get_bufname()
+    local height = 8
+    local width = 100
+    local buf = vim.api.nvim_create_buf(false, true)
+    local win_id = vim.api.nvim_open_win(buf, true, {
+        title = "File already harpun:ed",
+        relative = "editor",
+        row = math.floor(((vim.o.lines - height) / 2) - 1),
+        col = math.floor((vim.o.columns - width) / 2),
+        width = width,
+        height = height,
+        style = "minimal",
+        border = "single",
+    })
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, {
+        bufname .. " is already harpun:ed",
+        "replace? y (yes), n (no)"
+    })
+
+    vim.keymap.set("n", "y", function()
+        P.replace_at_index(self.items, index, current_bufname)
+        vim.api.nvim_win_close(win_id, true)
+    end, { buffer = buf, silent = true })
+
+    vim.keymap.set("n", "n", function()
+        vim.api.nvim_win_close(win_id, true)
+    end, { buffer = buf, silent = true })
 end
 
 return M

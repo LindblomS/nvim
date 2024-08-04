@@ -1,15 +1,16 @@
---- WIP
---- A file navigation plugin named harpun which basically is just a trimmed down version of harpoon.
+--- A file navigation plugin inspired by harpoon
+local item_factory = require("harpun.item_factory")
+local replace = require("harpun.replace")
+local util = require("harpun.util")
 local M = {}
-local P = {} -- private
 M.__index = M
 
 function M.setup()
     local harpun = M.new()
-    vim.keymap.set("n", "<leader>h", function() harpun:add(1) end)
-    vim.keymap.set("n", "<leader>j", function() harpun:add(2) end)
-    vim.keymap.set("n", "<leader>k", function() harpun:add(3) end)
-    vim.keymap.set("n", "<leader>l", function() harpun:add(4) end)
+    vim.keymap.set("n", "<leader>h", function() harpun:add(1, "h") end)
+    vim.keymap.set("n", "<leader>j", function() harpun:add(2, "j") end)
+    vim.keymap.set("n", "<leader>k", function() harpun:add(3, "k") end)
+    vim.keymap.set("n", "<leader>l", function() harpun:add(4, "l") end)
 
     vim.keymap.set("n", "<C-h>", function() harpun:select(1) end)
     vim.keymap.set("n", "<C-j>", function() harpun:select(2) end)
@@ -27,44 +28,39 @@ function M.new()
     }, M)
 end
 
-function P.create_item()
-    local name = P.normalize_path(vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf()), vim.loop.cwd())
-    local bufnr = vim.fn.bufnr(name, false)
-    local position = { 1, 0 }
-    if bufnr ~= -1 then
-        position = vim.api.nvim_win_get_cursor(0)
+function M:add(index, key)
+    if not index or index < 1 then
+        error("Argument error: index cannot be nil or less than 1. index was " .. (index or "nil"))
     end
-    return {
-        value = name,
-        context = {
-            row = position[1],
-            column = position[2],
-        }
-    }
-end
+    if not key then
+        error("Argument error: key cannot be nil")
+    end
 
-function P.normalize_path(bufname, root)
-    -- is plenary really necessary?
-    return require("plenary.path"):new(bufname):make_relative(root)
-end
-
-function M:add(index)
-    local item = P.create_item()
-    self.items[index] = item
+    local item = self.items[index]
+    if item then
+        replace.display_prompt(item.bufname, key, util.get_bufname(), index, self.items)
+        return
+    else
+        item = item_factory.create(util.get_bufname(), key)
+        self.items[index] = item
+    end
 end
 
 function M:select(index)
-    local item = self.items[index]
+    if not index or index < 1 then
+        error("Argument error: index cannot be nil or less than 1. index was " .. (index or "nil"))
+    end
 
+    local item = self.items[index]
     if not item then
         return
     end
 
-    local bufnr = vim.fn.bufnr(P.to_exact_name(item.value))
+    local bufnr = vim.fn.bufnr(util.to_exact_name(item.bufname))
     local set_position = false
     if bufnr == -1 then
         set_position = true
-        bufnr = vim.fn.bufadd(item.value)
+        bufnr = vim.fn.bufadd(item.bufname)
     end
 
     if not vim.api.nvim_buf_is_loaded(bufnr) then
@@ -89,22 +85,17 @@ function M:select(index)
             item.context.column = column
         end
 
-        -- can item.context.row/column really be nil here?
         vim.api.nvim_win_set_cursor(0, {
-            item.context.row or 1,
-            item.context.column or 0,
+            item.context.row,
+            item.context.column,
         })
     end
 end
 
-function P.to_exact_name(value)
-    return "^" .. value .. "$"
-end
-
 function M:print()
     local items = {}
-    for i, v in ipairs(self.items) do
-        items[i] = v.value
+    for i, item in ipairs(self.items) do
+        items[i] = item.bufname .. ", " .. item.key
     end
     print(vim.inspect(items))
 end

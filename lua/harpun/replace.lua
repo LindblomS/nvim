@@ -44,6 +44,14 @@ function M:set_keymaps(buf, win_id)
     vim.keymap.set("n", "n", function()
         vim.api.nvim_win_close(win_id, true)
     end, { buffer = buf, silent = true })
+
+    vim.keymap.set("n", "q", function()
+        vim.api.nvim_win_close(win_id, true)
+    end, { buffer = buf, silent = true })
+
+    vim.keymap.set("n", "<esc>", function()
+        vim.api.nvim_win_close(win_id, true)
+    end, { buffer = buf, silent = true })
 end
 
 function M:replace()

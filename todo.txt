@@ -1,5 +1,7 @@
 configure so that new line after comment doesn't automatically make that a comment line too.
 
+Add argument to Omnisharp user command to disable roslyn analyzers.
+
 Some keywords are still bold in kanagawa theme.
 Telescope
 - Fix go to symbols so that preview is enabled and so that it isn't truncated.

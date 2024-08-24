@@ -90,6 +90,7 @@ function M:select(index)
             item.context.column,
         })
     end
+    vim.api.nvim_feedkeys("zz", "n", false)
 end
 
 function M:print()

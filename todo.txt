@@ -2,8 +2,6 @@ configure so that new line after comment doesn't automatically make that a comme
 
 Add argument to Omnisharp user command to disable roslyn analyzers.
 
-Add the zz-command to when navigating to files via harpun.
-
 Some keywords are still bold in kanagawa theme.
 Telescope
 - Fix go to symbols so that preview is enabled and so that it isn't truncated.

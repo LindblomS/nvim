@@ -13,11 +13,3 @@ keymap.set('n', '<leader>qt', ':bprevious<bar> bdelete #<CR>', { silent = true }
 keymap.set('i', 'kj', '<Esc>')
 keymap.set('n', '<C-y>', '<C-y><C-y>')
 keymap.set('n', '<C-e>', '<C-e><C-e>')
-keymap.set("n", "<leader>e", "<cmd>Explore <cr>", { silent = true })
-
-vim.api.nvim_create_autocmd({ "FileType" }, {
-    pattern = "netrw",
-    callback = function()
-        vim.keymap.set("n", "<leader>E", "<cmd>Rex<cr>")
-    end
-})

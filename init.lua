@@ -23,3 +23,4 @@ require('lazy').setup('plugins', {
 
 require("harpun").setup()
 require("statusline")
+require("oil").setup()

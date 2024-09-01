@@ -1,7 +1,6 @@
 configure so that new line after comment doesn't automatically make that a comment line too.
 
 Fix lsp info in statusline not updating correctly, i.e. fix the autocommands.
-Change so that go to mark also centers the window (zz).
 Trim file path in harpun.
 
 Some keywords are still bold in kanagawa theme.

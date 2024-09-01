@@ -87,7 +87,7 @@ local function set_statusline_option(value)
 end
 
 vim.api.nvim_create_augroup("Statusline", {})
-vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWrite", "InsertLeave" }, {
     group = "Statusline",
     callback = function(_)
         set_statusline_option(Statusline.active())

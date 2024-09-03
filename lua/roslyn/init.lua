@@ -1,6 +1,8 @@
 local server = require("roslyn.server")
 local utils = require("roslyn.slnutils")
-
+local M = {}
+M.lsp_started = false
+M.client_id = 0
 ---@param buf number
 ---@return boolean
 local function valid_buffer(buf)
@@ -63,6 +65,7 @@ end
 ---@param roslyn_config InternalRoslynNvimConfig
 ---@param on_init fun(client: vim.lsp.Client)
 local function lsp_start(pipe, root_dir, roslyn_config, on_init)
+    M.lsp_started = true
     local config = vim.deepcopy(roslyn_config.config)
     config.name = "roslyn"
     config.cmd = vim.lsp.rpc.connect(pipe)
@@ -124,7 +127,7 @@ local function lsp_start(pipe, root_dir, roslyn_config, on_init)
         end
     end
 
-    vim.lsp.start(config, {
+    M.client_id = vim.lsp.start(config, {
         reuse_client = function(client, _config)
             if vim.g.roslyn_nvim_selected_solution and client.name == _config.name then
                 return true
@@ -169,7 +172,6 @@ end
 ---@field config? vim.lsp.ClientConfig
 ---@field choose_sln? fun(solutions: string[]): string?
 
-local M = {}
 
 ---Runs roslyn server (if not running already) and then lsp_start
 ---@param cmd string[]
@@ -228,7 +230,7 @@ local function start_with_solution(bufnr, cmd, sln, roslyn_config, on_init)
 
     -- Always prefer the currently selected solution file
     if vim.g.roslyn_nvim_selected_solution then
-        local sln_dir = vim.fs.root(bufnr, vim.g.roslyn_nvim_selected_solution) --[[@as string]]
+        local sln_dir = vim.fs.root(bufnr, vim.fs.dirname(vim.g.roslyn_nvim_selected_solution)) --[[@as string]]
         return wrap_roslyn(cmd, sln_dir, roslyn_config, on_init(vim.g.roslyn_nvim_selected_solution))
     end
 
@@ -294,6 +296,10 @@ function M.setup(config)
         callback = function(opt)
             if not valid_buffer(opt.buf) then
                 return
+            end
+
+            if M.lsp_started then
+                vim.lsp.buf_attach_client(opt.buf, M.client_id)
             end
 
             local sln_files = utils.get_solution_files(opt.buf)

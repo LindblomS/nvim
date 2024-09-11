@@ -237,7 +237,7 @@ local function start_with_solution(bufnr, cmd, sln, roslyn_config, on_init)
     local sln_file = get_sln_file(bufnr, sln, roslyn_config)
     if sln_file then
         vim.g.roslyn_nvim_selected_solution = sln_file
-        local sln_dir = vim.fs.root(bufnr, sln_file) --[[@as string]]
+        local sln_dir = vim.fs.dirname(sln_file) --[[@as string]]
         return wrap_roslyn(cmd, sln_dir, roslyn_config, on_init(sln_file))
     end
 
@@ -300,6 +300,7 @@ function M.setup(config)
 
             if M.lsp_started then
                 vim.lsp.buf_attach_client(opt.buf, M.client_id)
+                return
             end
 
             local sln_files = utils.get_solution_files(opt.buf)

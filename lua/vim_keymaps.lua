@@ -13,3 +13,17 @@ keymap.set('n', '<leader>qt', ':bprevious<bar> bdelete #<CR>', { silent = true }
 keymap.set('i', 'kj', '<Esc>')
 keymap.set('n', '<C-y>', '<C-y><C-y>')
 keymap.set('n', '<C-e>', '<C-e><C-e>')
+keymap.set({ "n", "v" }, "<leader>fr", function()
+    local word
+    local visual = vim.fn.mode() == "v"
+    if visual then
+        local saved_reg = vim.fn.getreg("v")
+        vim.cmd [[noautocmd sil norm! "vy]]
+        local selection = vim.fn.getreg("v")
+        vim.fn.setreg("v", saved_reg)
+        word = vim.F.if_nil(nil, selection) -- vim.F is deprecated. Use something else.
+    else
+        word = vim.F.if_nil(nil, vim.fn.expand("<cword>"))
+    end
+    vim.api.nvim_feedkeys(string.format(":%%s/%s/", word), "n", false)
+end, { desc = "Find and replace in current buffer" })

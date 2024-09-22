@@ -3,7 +3,6 @@ configure so that new line after comment doesn't automatically make that a comme
 Trim file path in harpun.
 
 Roslyn:
-- Completion can be a bit slow sometimes. Maybe there is a way to reduce the amount of options?
 - Recently selected solutions should sorted first
 
 Some keywords are still bold in kanagawa theme.

@@ -1,7 +1,7 @@
 return {
     {
         'mfussenegger/nvim-lint',
-        ft = { 'typescript', 'javascript', 'vue' },
+        ft = { 'ts_ls', 'javascript', 'vue' },
         config = function(_, _)
             local lint = require('lint')
             lint.linters_by_ft = {

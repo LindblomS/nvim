@@ -83,7 +83,7 @@ return {
             vim.api.nvim_create_autocmd('LspAttach', {
                 callback = function(ev)
                     local lsp_opts = { buffer = ev.buf }
-                    vim.keymap.set('n', '<leader>s', vim.lsp.buf.signature_help, lsp_opts)
+                    vim.keymap.set('n', '<leader>ls', vim.lsp.buf.signature_help, lsp_opts)
                     vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, lsp_opts)
                     vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, lsp_opts)
                     vim.keymap.set('n', '<leader>fm', function() vim.lsp.buf.format() end, lsp_opts)

@@ -11,9 +11,9 @@ keymap.set('n', '<leader>qa', ':%bd<CR>', { silent = true }, 'Close all buffers'
 keymap.set('n', '<leader>qA', ':%bd|e#|bd#|\'"<CR>', { silent = true }, 'Close all buffers but this')
 keymap.set('n', '<leader>qt', ':bprevious<bar> bdelete #<CR>', { silent = true }, 'Close this buffer')
 keymap.set('i', 'kj', '<Esc>')
-keymap.set('n', '<C-y>', '<C-y><C-y>')
-keymap.set('n', '<C-e>', '<C-e><C-e>')
-keymap.set({ "n", "v" }, "<leader>fr", function()
+keymap.set('n', '<C-y>', '<C-y><C-y><C-y>')
+keymap.set('n', '<C-e>', '<C-e><C-e><C-e>')
+keymap.set({ "n", "v" }, "<leader>s", function()
     local word
     local visual = vim.fn.mode() == "v"
     if visual then
@@ -26,4 +26,4 @@ keymap.set({ "n", "v" }, "<leader>fr", function()
         word = vim.F.if_nil(nil, vim.fn.expand("<cword>"))
     end
     vim.api.nvim_feedkeys(string.format(":%%s/%s/", word), "n", false)
-end, { desc = "Find and replace in current buffer" })
+end, { desc = "Substitute word under cursor or selection" })

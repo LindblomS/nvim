@@ -22,3 +22,6 @@ o.ignorecase = true
 o.smartcase = true
 
 o.scrolloff = 8
+
+o.cursorline = true
+o.cursorlineopt = "number"

@@ -2,6 +2,8 @@ configure so that new line after comment doesn't automatically make that a comme
 
 Trim file path in harpun.
 
+- Add highlight to filename in statusline.
+
 Roslyn:
 - Recently selected solutions should sorted first
 

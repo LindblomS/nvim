@@ -66,12 +66,20 @@ local function lineinfo()
     return "%-25(%3l:%-3c %p%%%)"
 end
 
+local function filename()
+    local bufname          = vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf())
+    local relative_bufname = require("plenary.path"):new(bufname):make_relative(vim.loop.cwd())
+    local base             = vim.fs.basename(relative_bufname)
+    local dir              = vim.fs.dirname(relative_bufname)
+    return string.format("%s/%%#CursorLineNr#%s", dir, base)
+end
+
 Statusline = {}
 
 Statusline.active = function()
     return table.concat({
         mode(),
-        "%f",
+        filename(),
         lsp(),
         "%#Statusline#",
         lineinfo(),

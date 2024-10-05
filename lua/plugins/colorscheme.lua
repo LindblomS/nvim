@@ -25,6 +25,7 @@ return {
                 overrides = function(colors)
                     local theme = colors.theme
                     return {
+                        FloatBorder = { bg = "none" },
                         Boolean = { bold = false },
                         TelescopeTitle = { fg = theme.ui.special, bold = true, },
                         TelescopePromptNormal = { bg = theme.ui.bg_p1 },

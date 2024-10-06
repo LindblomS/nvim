@@ -29,7 +29,7 @@ return {
                 end
             })
 
-            vim.api.nvim_create_user_command('R',
+            vim.api.nvim_create_user_command('Roslyn',
                 function()
                     require("roslyn").setup({
                         filewatching = false,
@@ -49,13 +49,13 @@ return {
                                 dotnet_compiler_diagnostics_scope = "fullSolution"
                             }
                         },
-                        choose_sln = function(sln_files)
-                            if #sln_files == 0 then
+                        choose_sln = function(solutions)
+                            if #solutions == 0 then
                                 return nil
                             end
 
                             local names = {}
-                            for i, v in ipairs(sln_files) do
+                            for i, v in ipairs(solutions) do
                                 names[i] = vim.fs.basename(v)
                             end
 
@@ -65,7 +65,7 @@ return {
                                     selected_index = index
                                 end)
 
-                            return sln_files[selected_index]
+                            return solutions[selected_index]
                         end
                     })
                 end,

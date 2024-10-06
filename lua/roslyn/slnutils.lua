@@ -1,4 +1,5 @@
 local M = {}
+local Common_solutions = require("roslyn.common_solutions")
 
 ---@class RoslynNvimDirectoryWithFiles
 ---@field directory string
@@ -26,39 +27,20 @@ function M.get_project_files(buffer)
     }
 end
 
-local commonly_used_sln_files_filepath = vim.fn.stdpath("data") .. "/commonly_used_sln_files.txt"
-local function read_file()
-    local path = commonly_used_sln_files_filepath
-    local file = io.open(path, "r")
-    if not file then
-        return {}
+function M.set_last_used_solution(last_used_solution)
+    local solutions = Common_solutions.get()
+    local indexToRemove
+    for i, v in ipairs(solutions) do
+        if v == last_used_solution then
+            indexToRemove = i
+            break
+        end
     end
-    local t = {}
-    for sln in file:lines("l") do
-        table.insert(t, sln)
+    if indexToRemove then
+        table.remove(solutions, indexToRemove)
     end
-    file:close()
-    return t
-end
-
-local function get_commonly_used_sln_files()
-    local filepath = commonly_used_sln_files_filepath
-    local file, err = io.open(filepath, "r")
-    if err then
-        print("couldn't read file: " .. filepath .. ". error: " .. err)
-        return {}
-    end
-    if not file then
-        print("couldn't read file: " .. filepath .. ". file was nil")
-        return {}
-    end
-    local sln_files = {}
-    print("reading from file: " .. filepath)
-    for sln in file:lines("l") do
-        table.insert(sln_files, sln)
-    end
-    file:close()
-    return sln_files
+    table.insert(solutions, 1, last_used_solution)
+    Common_solutions.save(solutions)
 end
 
 local function table_contains(table, element)
@@ -68,6 +50,22 @@ local function table_contains(table, element)
         end
     end
     return false
+end
+
+local function sort_last_used(solutions)
+    local common_solutions = Common_solutions.get()
+    local sorted = {}
+    for _, v in pairs(common_solutions) do
+        if table_contains(solutions, v) then
+            table.insert(sorted, v)
+        end
+    end
+    for _, v in pairs(solutions) do
+        if not table_contains(sorted, v) then
+            table.insert(sorted, v)
+        end
+    end
+    return sorted
 end
 
 ---Find the solution file from the current buffer.
@@ -84,75 +82,11 @@ function M.get_solution_files(buffer)
         return nil
     end
 
-    local sln_files = vim.fs.find(function(name, _)
+    local solutions = vim.fs.find(function(name, _)
         return name:match("%.sln$")
     end, { type = "file", limit = math.huge, path = directory })
-    local common_sln_files = get_commonly_used_sln_files()
-    local sorted_sln_files = {}
-    for _, v in pairs(common_sln_files) do
-        if table_contains(sln_files, v) then
-            table.insert(sorted_sln_files, v)
-        end
-    end
-    for _, v in pairs(sln_files) do
-        if not table_contains(sorted_sln_files, v) then
-            table.insert(sorted_sln_files, v)
-        end
-    end
-    return sorted_sln_files
-end
 
-function M.save_commonly_used_sln_file(sln)
-    local filepath = commonly_used_sln_files_filepath
-    local file, err = io.open(filepath, "r")
-    if err then
-        print("couldn't read file: " .. filepath .. ". error: " .. err)
-    end
-
-    if not file then -- file doesn't exist
-        print("creating file: " .. filepath)
-        file, err = io.open(filepath, "w")
-        if err then
-            print("couldn't create file: " .. filepath .. ". error: " .. err)
-        else
-            if file then
-                file:write(sln)
-                file:close()
-            end
-        end
-        return
-    end
-
-    local sln_files = {}
-    for sln_file in file:lines("l") do
-        table.insert(sln_files, sln_file)
-    end
-    file:close()
-
-    local indexToRemove
-    for i, v in ipairs(sln_files) do
-        if v == sln then
-            indexToRemove = i
-        end
-    end
-    if indexToRemove then
-        table.remove(sln_files, indexToRemove)
-    end
-    table.insert(sln_files, 1, sln)
-    local file, err = io.open(filepath, "w")
-    if err then
-        print("error while trying to write to file: " .. filepath .. ". error: " .. err)
-        return
-    end
-
-    if file then
-        for _, v in pairs(sln_files) do
-            file:write(string.format("%s\n", v))
-        end
-        file:close()
-    else
-        print("couldn't write to file: " .. filepath .. ". file was nil")
-    end
+    return sort_last_used(solutions)
 end
 
 --- Find a path to sln file that is likely to be the one that the current buffer

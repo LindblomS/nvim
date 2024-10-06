@@ -23,12 +23,12 @@ function M.get()
     if not file then
         return {}
     end
-    local t = {}
-    for sln in file:lines("l") do
-        table.insert(t, sln)
+    local solutions = {}
+    for solution in file:lines("l") do
+        table.insert(solutions, solution)
     end
     file:close()
-    return t
+    return solutions
 end
 
 return M

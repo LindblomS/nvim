@@ -1,32 +1,6 @@
 local M = {}
 local Common_solutions = require("roslyn.common_solutions")
 
----@class RoslynNvimDirectoryWithFiles
----@field directory string
----@field files string[]
-
----Gets the root directory of the first project file and find all related project file to that directory
----@param buffer integer
----@return RoslynNvimDirectoryWithFiles?
-function M.get_project_files(buffer)
-    local directory = vim.fs.root(buffer, function(name)
-        return name:match("%.csproj$") ~= nil
-    end)
-
-    if not directory then
-        return nil
-    end
-
-    local files = vim.fs.find(function(name, _)
-        return name:match("%.csproj$")
-    end, { path = directory, limit = math.huge })
-
-    return {
-        directory = directory,
-        files = files,
-    }
-end
-
 function M.set_last_used_solution(last_used_solution)
     local solutions = Common_solutions.get()
     local indexToRemove
@@ -52,7 +26,7 @@ local function table_contains(table, element)
     return false
 end
 
-local function sort_last_used(solutions)
+local function sort_last_used_solution(solutions)
     local common_solutions = Common_solutions.get()
     local sorted = {}
     for _, v in pairs(common_solutions) do
@@ -68,12 +42,35 @@ local function sort_last_used(solutions)
     return sorted
 end
 
----Find the solution file from the current buffer.
----Recursively see if we have any other solution files, to potentially
----give th user an option to choose which solution file to use
----@param buffer integer
----@return string[]?
-function M.get_solution_files(buffer)
+-- If we only have one solution file, then use that.
+-- If the user have provided a hook to select a solution file, use that
+-- If not, we must have multiple, and we try to predict the correct solution file
+---@param solutions string[]
+---@param roslyn_config InternalRoslynNvimConfig
+local function choose_solution(solutions, roslyn_config)
+    if #solutions == 0 then
+        return nil
+    end
+
+    if #solutions == 1 then
+        return solutions[1]
+    end
+
+    local names = {}
+    for i, v in ipairs(solutions) do
+        names[i] = vim.fs.basename(v)
+    end
+
+    local selected_index
+    vim.ui.select(names, { prompt = "Select solution" },
+        function(_, index)
+            selected_index = index
+        end)
+
+    return solutions[selected_index]
+end
+
+function M.get_solution(roslyn_config, buffer)
     local directory = vim.fs.root(buffer, function(name)
         return name:match("%.sln$") ~= nil
     end)
@@ -86,43 +83,7 @@ function M.get_solution_files(buffer)
         return name:match("%.sln$")
     end, { type = "file", limit = math.huge, path = directory })
 
-    return sort_last_used(solutions)
-end
-
---- Find a path to sln file that is likely to be the one that the current buffer
---- belongs to. Ability to predict the right sln file automates the process of starting
---- LSP, without requiring the user to invoke CSTarget each time the solution is open.
---- The prediction assumes that the nearest csproj file (in one of parent dirs from buffer)
---- should be a part of the sln file that the user intended to open.
----@param buffer integer
----@param sln_files string[]
----@return string?
-function M.predict_sln_file(buffer, sln_files)
-    local csproj = M.get_project_files(buffer)
-    if not csproj or #csproj.files > 1 then
-        return nil
-    end
-
-    local csproj_filename = vim.fn.fnamemodify(csproj.files[1], ":t")
-
-    -- Look for a solution file that contains the name of the project
-    -- Predict that to be the "correct" solution file if we find the project name
-    for _, file_path in ipairs(sln_files) do
-        local file = io.open(file_path, "r")
-
-        if not file then
-            return nil
-        end
-
-        local content = file:read("*a")
-        file:close()
-
-        if content:find(csproj_filename, 1, true) then
-            return file_path
-        end
-    end
-
-    return nil
+    return choose_solution(sort_last_used_solution(solutions), roslyn_config)
 end
 
 return M

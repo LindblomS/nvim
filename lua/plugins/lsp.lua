@@ -49,24 +49,6 @@ return {
                                 dotnet_compiler_diagnostics_scope = "fullSolution"
                             }
                         },
-                        choose_sln = function(solutions)
-                            if #solutions == 0 then
-                                return nil
-                            end
-
-                            local names = {}
-                            for i, v in ipairs(solutions) do
-                                names[i] = vim.fs.basename(v)
-                            end
-
-                            local selected_index
-                            vim.ui.select(names, { prompt = "Select solution" },
-                                function(_, index)
-                                    selected_index = index
-                                end)
-
-                            return solutions[selected_index]
-                        end
                     })
                 end,
                 {}

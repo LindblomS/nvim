@@ -31,15 +31,6 @@ return {
 
             vim.api.nvim_create_user_command('Roslyn',
                 function()
-                    local function get_sln_names_and_paths(sln_paths)
-                        local table = {}
-                        for _, path in ipairs(sln_paths) do
-                            local name = vim.fs.basename(path)
-                            table[name] = path
-                        end
-                        return table
-                    end
-
                     require("roslyn").setup({
                         filewatching = false,
                         config = {
@@ -58,23 +49,23 @@ return {
                                 dotnet_compiler_diagnostics_scope = "fullSolution"
                             }
                         },
-                        choose_sln = function(sln_files)
-                            if #sln_files == 0 then
+                        choose_sln = function(solutions)
+                            if #solutions == 0 then
                                 return nil
                             end
-                            local names_and_paths = get_sln_names_and_paths(sln_files)
+
                             local names = {}
-                            for name, _ in pairs(names_and_paths) do
-                                table.insert(names, name)
+                            for i, v in ipairs(solutions) do
+                                names[i] = vim.fs.basename(v)
                             end
 
-                            local selected_sln
+                            local selected_index
                             vim.ui.select(names, { prompt = "Select solution" },
-                                function(name)
-                                    selected_sln = name
+                                function(_, index)
+                                    selected_index = index
                                 end)
 
-                            return names_and_paths[selected_sln]
+                            return solutions[selected_index]
                         end
                     })
                 end,

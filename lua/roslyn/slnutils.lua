@@ -1,4 +1,5 @@
 local M = {}
+local Common_solutions = require("roslyn.common_solutions")
 
 ---@class RoslynNvimDirectoryWithFiles
 ---@field directory string
@@ -26,6 +27,47 @@ function M.get_project_files(buffer)
     }
 end
 
+function M.set_last_used_solution(last_used_solution)
+    local solutions = Common_solutions.get()
+    local indexToRemove
+    for i, v in ipairs(solutions) do
+        if v == last_used_solution then
+            indexToRemove = i
+            break
+        end
+    end
+    if indexToRemove then
+        table.remove(solutions, indexToRemove)
+    end
+    table.insert(solutions, 1, last_used_solution)
+    Common_solutions.save(solutions)
+end
+
+local function table_contains(table, element)
+    for _, v in pairs(table) do
+        if v == element then
+            return true
+        end
+    end
+    return false
+end
+
+local function sort_last_used(solutions)
+    local common_solutions = Common_solutions.get()
+    local sorted = {}
+    for _, v in pairs(common_solutions) do
+        if table_contains(solutions, v) then
+            table.insert(sorted, v)
+        end
+    end
+    for _, v in pairs(solutions) do
+        if not table_contains(sorted, v) then
+            table.insert(sorted, v)
+        end
+    end
+    return sorted
+end
+
 ---Find the solution file from the current buffer.
 ---Recursively see if we have any other solution files, to potentially
 ---give th user an option to choose which solution file to use
@@ -40,9 +82,11 @@ function M.get_solution_files(buffer)
         return nil
     end
 
-    return vim.fs.find(function(name, _)
+    local solutions = vim.fs.find(function(name, _)
         return name:match("%.sln$")
     end, { type = "file", limit = math.huge, path = directory })
+
+    return sort_last_used(solutions)
 end
 
 --- Find a path to sln file that is likely to be the one that the current buffer

@@ -1,3 +1,5 @@
+- Add redo last search to telescope
+
 configure so that new line after comment doesn't automatically make that a comment line too.
 
 Trim file path in harpun.

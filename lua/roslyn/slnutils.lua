@@ -19,7 +19,7 @@ end
 
 local function table_contains(table, element)
     for _, v in pairs(table) do
-        if v == element then
+        if string.lower(v) == string.lower(element) then
             return true
         end
     end
@@ -42,12 +42,8 @@ local function sort_last_used_solution(solutions)
     return sorted
 end
 
--- If we only have one solution file, then use that.
--- If the user have provided a hook to select a solution file, use that
--- If not, we must have multiple, and we try to predict the correct solution file
 ---@param solutions string[]
----@param roslyn_config InternalRoslynNvimConfig
-local function choose_solution(solutions, roslyn_config)
+local function choose_solution(solutions)
     if #solutions == 0 then
         return nil
     end
@@ -70,7 +66,7 @@ local function choose_solution(solutions, roslyn_config)
     return solutions[selected_index]
 end
 
-function M.get_solution(roslyn_config, buffer)
+function M.get_solution(buffer)
     local directory = vim.fs.root(buffer, function(name)
         return name:match("%.sln$") ~= nil
     end)
@@ -83,7 +79,7 @@ function M.get_solution(roslyn_config, buffer)
         return name:match("%.sln$")
     end, { type = "file", limit = math.huge, path = directory })
 
-    return choose_solution(sort_last_used_solution(solutions), roslyn_config)
+    return choose_solution(sort_last_used_solution(solutions))
 end
 
 return M

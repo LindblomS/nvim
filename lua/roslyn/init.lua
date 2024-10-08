@@ -236,7 +236,7 @@ function M.setup(config)
                 return
             end
 
-            local solution = utils.get_solution(roslyn_config, opt.buf)
+            local solution = utils.get_solution(opt.buf)
             if solution then
                 return start_with_solution(cmd, solution, roslyn_config, on_init_solution)
             else

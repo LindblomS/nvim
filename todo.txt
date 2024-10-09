@@ -8,3 +8,5 @@ Some keywords are still bold in kanagawa theme.
 Telescope
 - Fix go to symbols so that preview is enabled and so that it isn't truncated.
 - find buffers, current buffer should be selected.
+
+- Bug with harpun. When you mark a file and stand on the first line, any time you jump to that file you'll be positioned at the first line.

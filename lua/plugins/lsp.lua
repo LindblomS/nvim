@@ -5,10 +5,26 @@ return {
             local lspconfig = require('lspconfig')
 
             -- servers that doesn't require any custom setup
-            local servers = { 'rust_analyzer', 'ts_ls', 'volar', "html" }
+            local servers = { 'rust_analyzer', "html" }
             for _, server in ipairs(servers) do
                 lspconfig[server].setup({})
             end
+
+            local vue_language_server_path =
+            "C:/Users/samuel.lindblom/Appdata/Roaming/npm/node_modules/@vue/language-server/node_modules/@vue/typescript-plugin"
+            lspconfig.ts_ls.setup({
+                init_options = {
+                    plugins = {
+                        {
+                            name = "@vue/typescript-plugin",
+                            location = vue_language_server_path,
+                            languages = { "vue" },
+                        },
+                    },
+                },
+                filetypes = { "typescript", "javascript", "typescriptreact", "javascriptreact", "vue" },
+            })
+
 
             lspconfig.lua_ls.setup({
                 settings = {
@@ -54,12 +70,18 @@ return {
                 {}
             )
             vim.api.nvim_create_autocmd('LspAttach', {
-                callback = function(ev)
-                    local lsp_opts = { buffer = ev.buf }
+                callback = function(args)
+                    local lsp_opts = { buffer = args.buf }
                     vim.keymap.set('n', '<leader>ls', vim.lsp.buf.signature_help, lsp_opts)
                     vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, lsp_opts)
                     vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, lsp_opts)
                     vim.keymap.set('n', '<leader>fm', function() vim.lsp.buf.format() end, lsp_opts)
+
+                    -- remove semantic tokens for ts_ls because it looks like shit.
+                    local client = vim.lsp.get_client_by_id(args.data.client_id)
+                    if client.name == "ts_ls" then
+                        client.server_capabilities.semanticTokensProvider = nil
+                    end
 
                     vim.api.nvim_create_autocmd('BufWritePre', {
                         pattern = { '*.{cs,rs,lua}' },

@@ -56,7 +56,7 @@ function M:select(index)
         return
     end
 
-    local bufnr = vim.fn.bufnr(util.to_exact_name(item.bufname))
+    local bufnr = vim.fn.bufnr(item.bufname)
     local set_position = false
     if bufnr == -1 then
         set_position = true
@@ -77,17 +77,9 @@ function M:select(index)
             item.context.row = lines
         end
 
-        local row = item.context.row
-        local row_text = vim.api.nvim_buf_get_lines(0, row - 1, row, false)
-        local column = #row_text[1] -- wtf does this even do?
-
-        if item.context.column > column then
-            item.context.column = column
-        end
-
         vim.api.nvim_win_set_cursor(0, {
             item.context.row,
-            item.context.column,
+            0,
         })
     end
     vim.api.nvim_feedkeys("zz", "n", false)

@@ -27,6 +27,8 @@ return {
                     return {
                         FloatBorder = { bg = "none" },
                         Boolean = { bold = false },
+                        NormalFloat = { bg = "none" },
+                        FloatTitle = { bg = "none" },
                         TelescopeTitle = { fg = theme.ui.special, bold = true, },
                         TelescopePromptNormal = { bg = theme.ui.bg_p1 },
                         TelescopePromptBorder = { fg = theme.ui.bg_p1, bg = theme.ui.bg_p1, },

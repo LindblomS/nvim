@@ -10,3 +10,4 @@ Telescope
 - find buffers, current buffer should be selected.
 
 - Add indent all parameters keymap for csharp development
+- Fix <leader>ls popout having no borders

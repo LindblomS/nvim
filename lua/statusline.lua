@@ -67,11 +67,13 @@ local function lineinfo()
 end
 
 local function filename()
+    local cwd              = vim.uv.cwd()
     local bufname          = vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf())
-    local relative_bufname = require("plenary.path"):new(bufname):make_relative(vim.loop.cwd())
+    local relative_bufname = require("plenary.path"):new(bufname):make_relative(cwd)
     local base             = vim.fs.basename(relative_bufname)
     local dir              = vim.fs.dirname(relative_bufname)
-    return string.format("%s/%%#CursorLineNr#%s", dir, base)
+    cwd                    = vim.fs.basename(cwd)
+    return string.format("%s/%s/%%#CursorLineNr#%s", cwd, dir, base)
 end
 
 Statusline = {}

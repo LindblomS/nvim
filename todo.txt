@@ -8,7 +8,6 @@ Some keywords are still bold in kanagawa theme.
 
 Telescope
 - Fix go to symbols so that preview is enabled and so that it isn't truncated.
-- find buffers, current buffer should be selected.
 
 - Add indent all parameters keymap for csharp development
 - Fix <leader>ls popout having no borders

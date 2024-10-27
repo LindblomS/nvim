@@ -89,6 +89,12 @@ return {
                         }
                     )
 
+                    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+                        vim.lsp.handlers.signature_help, {
+                            border = "single",
+                        }
+                    )
+
                     vim.api.nvim_create_autocmd('BufWritePre', {
                         pattern = { '*.{cs,rs,lua}' },
                         callback = function()

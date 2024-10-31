@@ -5,7 +5,7 @@ return {
             local lspconfig = require('lspconfig')
 
             -- servers that doesn't require any custom setup
-            local servers = { 'rust_analyzer', "html" }
+            local servers = { 'rust_analyzer', "html", "jsonls" }
             for _, server in ipairs(servers) do
                 lspconfig[server].setup({})
             end

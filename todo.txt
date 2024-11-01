@@ -10,3 +10,4 @@ Telescope
 - Fix go to symbols so that preview is enabled and so that it isn't truncated.
 
 - Add indent all parameters keymap for csharp development
+- Fix row and column in statusline being to close to lsp diagnostics

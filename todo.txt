@@ -11,3 +11,4 @@ Telescope
 
 - Add indent all parameters keymap for csharp development
 - Fix row and column in statusline being to close to lsp diagnostics
+- Add borders to diagnostics popout

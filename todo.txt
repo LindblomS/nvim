@@ -1,14 +1,8 @@
 - Add redo last search to telescope
-
-configure so that new line after comment doesn't automatically make that a comment line too.
-
-Trim file path in harpun.
-
-Some keywords are still bold in kanagawa theme.
-
-Telescope
-- Fix go to symbols so that preview is enabled and so that it isn't truncated.
-
+- Configure so that new line after comment doesn't automatically make that a comment line too.
+- Trim file path in harpun.
+- Some keywords are still bold in kanagawa theme.
+- Fix go to symbols (telescope) so that preview is enabled and so that it isn't truncated.
 - Add indent all parameters keymap for csharp development
 - Fix row and column in statusline being to close to lsp diagnostics
 - Add borders to diagnostics popout

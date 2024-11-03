@@ -82,9 +82,9 @@ Statusline.active = function()
     return table.concat({
         mode(),
         filename(),
-        lsp(),
+        " " .. lsp(),
         "%#Statusline#",
-        lineinfo(),
+        " " .. lineinfo(),
     })
 end
 

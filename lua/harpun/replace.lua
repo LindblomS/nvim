@@ -15,7 +15,7 @@ end
 
 function M:prompt()
     local height = 8
-    local width = 100
+    local width = 100 -- todo: get the length of the longest bufname and use that as a base for width
     local buf = vim.api.nvim_create_buf(false, true)
     local win_id = vim.api.nvim_open_win(buf, true, {
         title = "File already harpun:ed",
@@ -42,10 +42,6 @@ function M:set_keymaps(buf, win_id)
     end, { buffer = buf, silent = true })
 
     vim.keymap.set("n", "n", function()
-        vim.api.nvim_win_close(win_id, true)
-    end, { buffer = buf, silent = true })
-
-    vim.keymap.set("n", "q", function()
         vim.api.nvim_win_close(win_id, true)
     end, { buffer = buf, silent = true })
 

@@ -17,14 +17,16 @@ function M.setup()
     vim.keymap.set("n", "<C-k>", function() harpun:select(3) end)
     vim.keymap.set("n", "<C-l>", function() harpun:select(4) end)
 
-    vim.api.nvim_create_user_command('Harpun', function()
-        harpun:print()
-    end, {})
+    vim.keymap.set("n", "<C-f>", function() harpun:open_menu() end)
 end
 
 function M.new()
     return setmetatable({
         items = {},
+        menu = {
+            buf = nil,
+            closing = false,
+        }
     }, M)
 end
 
@@ -56,41 +58,81 @@ function M:select(index)
         return
     end
 
-    local bufnr = vim.fn.bufnr(item.bufname)
-    local set_position = false
-    if bufnr == -1 then
-        set_position = true
-        bufnr = vim.fn.bufadd(item.bufname)
+    local buf = vim.fn.bufnr(item.bufname)
+    if buf == -1 then
+        buf = vim.fn.bufadd(item.bufname)
     end
 
-    if not vim.api.nvim_buf_is_loaded(bufnr) then
-        vim.fn.bufload(bufnr)
+    if not vim.api.nvim_buf_is_loaded(buf) then
+        vim.fn.bufload(buf)
         vim.api.nvim_set_option_value("buflisted", true, {
-            buf = bufnr,
+            buf = buf,
         })
     end
 
-    vim.api.nvim_set_current_buf(bufnr)
-    if set_position then
-        local lines = vim.api.nvim_buf_line_count(bufnr)
-        if item.context.row > lines then
-            item.context.row = lines
-        end
-
-        vim.api.nvim_win_set_cursor(0, {
-            item.context.row,
-            0,
-        })
-    end
+    vim.api.nvim_set_current_buf(buf)
     vim.api.nvim_feedkeys("zz", "n", false)
 end
 
-function M:print()
+-- todo
+-- should be able to rearrange items
+
+function M:open_menu()
+    local height = 8
+    local width = 70 -- todo: get the length of the longest bufname and use that as a base for width
+    local buf = vim.api.nvim_create_buf(false, true)
+    local win = vim.api.nvim_open_win(buf, true, {
+        relative = "editor",
+        title = "harpun",
+        title_pos = "left",
+        row = math.floor(((vim.o.lines - height) / 2) - 1),
+        col = math.floor((vim.o.columns - width) / 2),
+        width = width,
+        height = height,
+        style = "minimal",
+        border = "single",
+    })
+    self.menu = {
+        buf = buf,
+        closing = false,
+    }
+
+    vim.keymap.set("n", "<esc>", function()
+        self:close_menu()
+    end, { buffer = self.menu.buf, silent = true })
+
+    vim.keymap.set("n", "<CR>", function()
+        local index = vim.fn.line(".")
+        self:close_menu()
+        self:select(index)
+    end, { buffer = self.menu.buf, silent = true })
+
+    vim.api.nvim_set_option_value("buftype", "acwrite", { buf = self.menu.buf })
+    vim.api.nvim_set_option_value("number", true, {
+        win = win,
+    })
+
     local items = {}
     for i, item in ipairs(self.items) do
-        items[i] = item.bufname .. ", " .. item.key
+        items[i] = item.bufname
     end
-    print(vim.inspect(items))
+    vim.api.nvim_buf_set_lines(self.menu.buf, 0, -1, false, items)
+end
+
+function M:close_menu()
+    if self.menu.closing then
+        return
+    end
+    self.menu.closing = true
+    if vim.api.nvim_buf_is_valid(self.menu.buf) then
+        print("delete buf")
+        vim.api.nvim_buf_delete(self.menu.buf, { force = true })
+    end
+
+    self.menu = {
+        buf = nil,
+        closing = false
+    }
 end
 
 return M

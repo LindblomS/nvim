@@ -79,7 +79,18 @@ end
 
 function M:open_menu()
     local height = 8
-    local width = 70 -- todo: get the length of the longest bufname and use that as a base for width
+    local width = 0 -- todo: get the length of the longest bufname and use that as a base for width
+    local longest_bufname
+
+    for _, value in pairs(self.items) do
+        if #value.bufname > width then
+            width = #value.bufname
+            longest_bufname = value.bufname
+        end
+    end
+    print(longest_bufname)
+    print(width)
+
     local buf = vim.api.nvim_create_buf(false, true)
     local win = vim.api.nvim_open_win(buf, true, {
         relative = "editor",
@@ -87,7 +98,7 @@ function M:open_menu()
         title_pos = "left",
         row = math.floor(((vim.o.lines - height) / 2) - 1),
         col = math.floor((vim.o.columns - width) / 2),
-        width = width,
+        width = width + 5,
         height = height,
         style = "minimal",
         border = "single",
